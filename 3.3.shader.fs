@@ -41,7 +41,7 @@ uniform vec3 lightColorR;
 
 void main()
 {   
-		//ambient
+	//ambient
     vec3 ambient = light.ambient * vec3(texture(material.diffuse, vTexCoord));
 
     //diffuse
@@ -50,13 +50,13 @@ void main()
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, vTexCoord));
     
-		//specular
+	//specular
     vec3 viewDir = normalize(-FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * (spec * vec3(texture(material.specular, vTexCoord)));
 
-		//emission
+	//emission
     vec3 emission = vec3(texture(material.emissive, (vTexCoord + vec2(0.0, increment))));
     vec3 emask = vec3(texture(material.emissivemap, vTexCoord));
     vec3 emissionFull = emission * emask;
