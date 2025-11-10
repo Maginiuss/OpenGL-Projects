@@ -40,19 +40,23 @@ uniform vec3 lightPosR;
 uniform vec3 lightColorR;
 
 void main()
-{//mix(texture(wood, vTexCoord), texture(face, vec2(1.0 - vTexCoord.x, vTexCoord.y)), mixVal) * vec4(vColor, 1.0) *    
+{   
+		//ambient
     vec3 ambient = light.ambient * vec3(texture(material.diffuse, vTexCoord));
-    
+
+    //diffuse
     vec3 norm = normalize(vNormal);
     vec3 lightDir = normalize(light.position - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, vTexCoord));
     
+		//specular
     vec3 viewDir = normalize(-FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * (spec * vec3(texture(material.specular, vTexCoord)));
 
+		//emission
     vec3 emission = vec3(texture(material.emissive, (vTexCoord + vec2(0.0, increment))));
     vec3 emask = vec3(texture(material.emissivemap, vTexCoord));
     vec3 emissionFull = emission * emask;
